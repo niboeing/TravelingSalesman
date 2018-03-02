@@ -60,6 +60,7 @@ int main(){
 	random_device rd;
 	mt19937 random_number(rd());
 	
+	
 	//select temperature
 	double temperature = 1.;
 		
@@ -77,6 +78,10 @@ int main(){
         }
     }
 	int N = Cities.size();
+	
+	//create functions for RNG
+	uniform_int_distribution<> GetRandomJ(0,N-1);
+	uniform_real_distribution<> GetRandomX(0,1);
 	
 	//generate random permutation for distances
 	shuffle(randPerm.begin(),randPerm.end(),random_number);
@@ -98,25 +103,26 @@ int main(){
 	//first time set i=0, after increment by 1
 	
 	for (int alg_i = 0;alg_i<N;alg_i++){
-	
+		
+		auto alg_j = alg_i;
 		//STEP 3
 		//generate random j
 		while (alg_j==alg_i){
-			j = bind(uniform_int_distribution<int>(0,N-1),random_number);
+			alg_j = GetRandomJ(random_number);
 		}
-		i_tilde = min(alg_i,alg_j);
-		j_tilde = max(alg_i,alg_j);
+		auto i_tilde = min(alg_i,alg_j);
+		auto j_tilde = max(alg_i,alg_j);
 		
 		//STEP 4
 		//switch path
 		vector<int> t_k;
-		t_k.resize(N)
+		t_k.resize(N);
 		
 		for (int k=0;k<i_tilde;k++){
 			t_k[k] = c_k[k];
 		}
 		for (int k=0;k<j_tilde-i_tilde;k++){
-			t_k[i_tilde+k-1] = c[j_tilde-k-1];
+			t_k[i_tilde+k-1] = c_k[j_tilde-k-1];
 		}
 		for (int k=j_tilde;k<N;k++){
 			t_k[k] = c_k[k];
@@ -130,7 +136,7 @@ int main(){
 		//STEP 6
 		//check if distance improved, if not random chance to accept anyway
 		if (length_after>length_before){
-			double alg_x = bind(uniform_real_distribution<double>(0,1),random_number);
+			double alg_x = GetRandomX(random_number);
 			if (alg_x<exp((length_before-length_after)/temperature)){
 				//STEP 7
 				c_k = t_k;
@@ -138,6 +144,7 @@ int main(){
 			}
 		}
 		//STEP 7
+		//accept new path
 		else {
 			c_k = t_k;
 			length_before = length_after;
