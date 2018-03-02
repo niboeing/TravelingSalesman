@@ -37,7 +37,6 @@ double GetDistance(vector<int> c1,vector<int> c2){
     y1 = c1[1];
     x2 = c2[0];
     y2 = c2[1];
-	cout << "Distance is " << 
     return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 }
 
@@ -72,9 +71,13 @@ int main(){
 	}
 		
 	double total = 0.;
-	for (unsigned int i=0; i<Cities.size()-1; i++){
-		total += Distances[randPerm[i]][randPerm[i]+1];
-		cout << "Distance between" << randPerm[i] << " and " << randPerm[i+1] << " is " << Distances[randPerm[i]][randPerm[i+1]];
+	for (unsigned int i=0; i<Cities.size(); i++){
+		if (i==Cities.size()-1){
+			total+=Distances[randPerm[i]][randPerm[0]];
+		}	
+		else {
+			total += Distances[randPerm[i]][randPerm[i]+1];
+		}	
 	}
 	
 	cout << "Total distance: " << total << endl;
