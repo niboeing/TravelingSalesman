@@ -180,7 +180,9 @@ int main(){
 				}
 			}
 		}
-		cout << it << " " << length_before << endl;
+		if (it % 100 == 0){
+			cout << it << " " << length_before << endl;
+		}
 		(*filewrite)[it] = (make_pair(it,length_before));
 		
 	}
