@@ -23,8 +23,10 @@ pathlist = [int(i) for i in pathlist]
 pointlist = list()
 for i in range(len(citylist)):
 	pointlist.append(citylist[pathlist[i]])
+pointlist.append(citylist[pathlist[0]])
 
 
 data = np.array(pointlist)
+plt.axis('off')
 plt.plot(data[:, 0], data[:, 1])
 plt.show()

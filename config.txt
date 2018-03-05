@@ -1,2 +1,2 @@
 T=0.1
-Iterations=5000
+Iterations=2000

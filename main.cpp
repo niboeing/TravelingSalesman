@@ -50,7 +50,7 @@ double TotalDistance(vector< vector<double> > Distances, vector<int> randPerm){
 			total+=Distances[randPerm[i]][randPerm[0]];
 		}	
 		else {
-			total += Distances[randPerm[i]][randPerm[i]+1];
+			total += Distances[randPerm[i]][randPerm[i+1]];
 		}	
 	}
 	
@@ -124,10 +124,16 @@ int main(){
 	
 	cout << "LENGTH BEFORE: " << length_before << endl;
 	
-	
+	int TempCounter = 1;
 	//STEP 2
 	//first time set i=0, after increment by 1
 	for (int it = 0;it < iterations;it++){
+		//reduce temperature every 1/4 of iterations
+		if (it == (int)(round((float)(iterations)/4*TempCounter))){
+			temperature/=10;
+			cout << "Reducing temperature, new temperature: " << temperature << endl;
+			TempCounter++;
+		}
 		for (int alg_i = 0;alg_i<N;alg_i++){
 			auto alg_j = alg_i;
 			//STEP 3
