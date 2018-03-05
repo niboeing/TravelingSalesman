@@ -182,10 +182,16 @@ int main(){
 	
 	//write results to file
 	ofstream outfile("log.txt");
-	for (int i = 0;i<filewrite->size();i++){
+	for (unsigned int i = 0;i<filewrite->size();i++){
 		outfile << (*filewrite)[i].first << " " << (*filewrite)[i].second << endl;
 	}
 	outfile.close();
+	
+	ofstream outpath("path.txt");
+	for (unsigned int i = 0;i<c_k.size();i++){
+		outpath << c_k[i] << endl;
+	}
+	outpath.close();
 	
     return 0;
 }
