@@ -120,6 +120,7 @@ int main(){
 	//c_k = s_k, calculate distance
 	vector<int> c_k = randPerm;
 	double length_before = TotalDistance(Distances,c_k);
+	vector< pair<int,double> > *filewrite = new vector< pair<int,double> >(iterations);
 	
 	cout << "LENGTH BEFORE: " << length_before << endl;
 	
@@ -173,8 +174,18 @@ int main(){
 				}
 			}
 		}
-		cout << it << " " << length_before << endl;	
+		cout << it << " " << length_before << endl;
+		(*filewrite)[it] = (make_pair(it,length_before));
+		
 	}
 	cout << "LENGTH AFTER: " << length_before;
+	
+	//write results to file
+	ofstream outfile("log.txt");
+	for (int i = 0;i<filewrite->size();i++){
+		outfile << (*filewrite)[i].first << " " << (*filewrite)[i].second << endl;
+	}
+	outfile.close();
+	
     return 0;
 }
