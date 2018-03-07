@@ -13,8 +13,8 @@ for el in tempcitylist:
 	citylist.append(el.split(' '))
 	
 for i in range(len(citylist)):
-	citylist[i][0] = int(citylist[i][0])
-	citylist[i][1] = int(citylist[i][1])
+	citylist[i][0] = float(citylist[i][0])
+	citylist[i][1] = float(citylist[i][1])
 
 with open('path.txt') as pathfile:
 	pathlist = pathfile.read().splitlines()

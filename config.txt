@@ -1,2 +1,3 @@
 T=0.1
-Iterations=2000
+Iterations=500
+AdjustTemp=0

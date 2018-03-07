@@ -13,19 +13,19 @@
 using namespace std;
 
 //Fetch cities from file
-vector< vector<int> > GetCities(){
-    vector< vector<int> > Cities;
+vector< vector<double> > GetCities(){
+    vector< vector<double> > Cities;
     ifstream inFile;
     inFile.open("cities.txt");
     string temp;
     while(getline(inFile,temp)){
-        vector<int> coordinatePair;
+        vector<double> coordinatePair;
         istringstream buffer(temp);
         string s1,s2;
         buffer >> s1;
         buffer >> s2;
-        coordinatePair.push_back(stoi(s1));
-        coordinatePair.push_back(stoi(s2));
+        coordinatePair.push_back(stof(s1));
+        coordinatePair.push_back(stof(s2));
         Cities.push_back(coordinatePair);
     }
 	inFile.close();
@@ -33,8 +33,8 @@ vector< vector<int> > GetCities(){
 }
 
 //Get distance between two cities
-double GetDistance(vector<int> c1,vector<int> c2){
-    int x1,x2,y1,y2;
+double GetDistance(vector<double> c1,vector<double> c2){
+    double x1,x2,y1,y2;
     x1 = c1[0];
     y1 = c1[1];
     x2 = c2[0];
@@ -80,6 +80,8 @@ int main(){
 	auto config = GetConfig();
 	double temperature = stof(config["T"]);
 	int iterations = stoi(config["Iterations"]);
+	string AdjustTemp = config["AdjustTemp"];
+
 	
 	cout << "Temperature used: T=" << temperature << endl;
 	cout << "Iterations used: " << iterations << endl;
@@ -90,7 +92,7 @@ int main(){
 			
 	
 	//Get cities and build distance table
-    vector< vector<int> > Cities = GetCities();
+    vector< vector<double> > Cities = GetCities();
     vector< vector<double> > Distances;
 	vector<int> randPerm;
 	Distances.resize(Cities.size());
@@ -129,10 +131,12 @@ int main(){
 	//first time set i=0, after increment by 1
 	for (int it = 0;it < iterations;it++){
 		//reduce temperature every 1/4 of iterations
-		if (it == (int)(round((float)(iterations)/4*TempCounter))){
-			temperature/=10;
-			cout << "Reducing temperature, new temperature: " << temperature << endl;
-			TempCounter++;
+		if (AdjustTemp!="0"){
+			if (it == (int)(round((float)(iterations)/4*TempCounter))){
+				temperature/=10;
+				cout << "Reducing temperature, new temperature: " << temperature << endl;
+				TempCounter++;
+			}
 		}
 		for (int alg_i = 0;alg_i<N;alg_i++){
 			auto alg_j = alg_i;
