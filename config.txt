@@ -1,3 +1,5 @@
-T=0.1
-Iterations=1000
-AdjustTemp=0
+T=1
+Iterations=20000
+AdjustTemp=1
+Algorithm=flip
+

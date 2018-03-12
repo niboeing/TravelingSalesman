@@ -57,6 +57,7 @@ double TotalDistance(vector< vector<double> > Distances, vector<int> randPerm){
 	return total;
 }
 
+//import config
 map<string,string> GetConfig(){
 	map<string,string> config;
 	ifstream inFile;
@@ -81,10 +82,18 @@ int main(){
 	double temperature = stof(config["T"]);
 	int iterations = stoi(config["Iterations"]);
 	string AdjustTemp = config["AdjustTemp"];
-
+	string Algorithm = config["Algorithm"];
+	
+	if (Algorithm!="flip" && Algorithm!="switch"){
+		cout << "[ERROR] Invalid algorithm, use either switch or flip";
+		return 1;
+	}
 	
 	cout << "Temperature used: T=" << temperature << endl;
 	cout << "Iterations used: " << iterations << endl;
+	if (AdjustTemp=="0") cout << "Not adjusting temperature" << endl;
+	else cout << "Adjusting temperature" << endl;
+	cout << "Algorithm used: " << Algorithm << endl;
 	
    	//Seed random number generator
 	random_device rd;
@@ -152,12 +161,21 @@ int main(){
 			//switch path
 			vector<int> t_k;
 			t_k.resize(N);
-			
+		
 			for (int k=0;k<i_tilde;k++){
 				t_k[k] = c_k[k];
 			}
-			for (int k=0;k<j_tilde-i_tilde+1;k++){
-				t_k[i_tilde+k] = c_k[j_tilde-k];
+			if (Algorithm=="flip"){
+				for (int k=0;k<j_tilde-i_tilde+1;k++){
+					t_k[i_tilde+k] = c_k[j_tilde-k];
+				}
+			}
+			
+			else {
+				t_k[i_tilde] = c_k[j_tilde];
+				for (int k=1;k<j_tilde-i_tilde;k++){
+					t_k[i_tilde+k] = c_k[i_tilde+k];
+				}
 			}
 			for (int k=j_tilde+1;k<N;k++){
 				t_k[k] = c_k[k];
