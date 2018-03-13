@@ -1,5 +1,5 @@
 T=1
 Iterations=20000
 AdjustTemp=1
-Algorithm=flip
+Algorithm=switch
 
