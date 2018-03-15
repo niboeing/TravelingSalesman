@@ -113,6 +113,7 @@ int main(){
         }
     }
 	int N = Cities.size();
+	int alg_n = N/10;
 	
 	//create functions for RNG
 	uniform_int_distribution<> GetRandomJ(0,N-1);
@@ -136,23 +137,38 @@ int main(){
 	cout << "LENGTH BEFORE: " << length_before << endl;
 	
 	int TempCounter = 1;
+	int alg_m = N;
 	//STEP 2
 	//first time set i=0, after increment by 1
 	for (int it = 0;it < iterations;it++){
 		//reduce temperature every 1/4 of iterations
-		if (AdjustTemp!="0"){
+		if (AdjustTemp!="0" && TempCounter!=0){
 			if (it == (int)(round((float)(iterations)/4*TempCounter))){
-				temperature/=10;
-				cout << "Reducing temperature, new temperature: " << temperature << endl;
-				TempCounter++;
+				if (TempCounter==3){
+					cout << "Now using step 3'" << endl;
+					TempCounter=0;
+				}
+				else {
+					temperature/=10;
+					cout << "Reducing temperature, new temperature: " << temperature << endl;
+					TempCounter++;
+				}
 			}
 		}
 		for (int alg_i = 0;alg_i<N;alg_i++){
 			auto alg_j = alg_i;
 			//STEP 3
 			//generate random j
-			while (alg_j==alg_i){
-				alg_j = GetRandomJ(random_number);
+			if (TempCounter==0){
+				while(alg_j==alg_i && (alg_m >= alg_n)){
+					alg_j = GetRandomJ(random_number);
+					alg_m = min({abs(alg_j-alg_i),abs(alg_j-alg_i+N),abs(alg_j-alg_i-N)});
+				}
+			}
+			else {
+				while (alg_j==alg_i){
+					alg_j = GetRandomJ(random_number);
+				}
 			}
 			auto i_tilde = min(alg_i,alg_j);
 			auto j_tilde = max(alg_i,alg_j);
